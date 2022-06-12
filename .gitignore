@@ -21,6 +21,7 @@ sdist/
 var/
 wheels/
 pip-wheel-metadata/
+mlproject/
 share/python-wheels/
 *.egg-info/
 .installed.cfg
