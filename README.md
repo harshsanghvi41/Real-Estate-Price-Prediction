@@ -102,3 +102,8 @@ Install Ipynb-kernal
 ```
 pip install ipykernel
 ```
+
+Install PyYAML
+```
+pip install PyYAML
+```
