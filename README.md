@@ -107,3 +107,5 @@ Install PyYAML
 ```
 pip install PyYAML
 ```
+
+> Data Drift: When your datset stats gets change we call it as data drift
