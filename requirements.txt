@@ -5,4 +5,5 @@ sklearn
 numpy
 PyYAML
 evidently
+dill
 -e .
