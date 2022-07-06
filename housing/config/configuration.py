@@ -11,7 +11,7 @@ from housing.exception import HousingException
 class Configuartion:
 
     def __init__(self,
-        config_file_path:str =CONFIG_FILE_PATH,
+        config_file_path:str = CONFIG_FILE_PATH,
         current_time_stamp:str = CURRENT_TIME_STAMP
         ) -> None:
         try:
@@ -49,18 +49,18 @@ class Configuartion:
                 ingested_data_dir,
                 data_ingestion_info[DATA_INGESTION_TRAIN_DIR_KEY]
             )
-            ingested_test_dir =os.path.join(
+            ingested_test_dir = os.path.join(
                 ingested_data_dir,
                 data_ingestion_info[DATA_INGESTION_TEST_DIR_KEY]
             )
 
 
-            data_ingestion_config=DataIngestionConfig(
-                dataset_download_url=dataset_download_url, 
-                tgz_download_dir=tgz_download_dir, 
-                raw_data_dir=raw_data_dir, 
-                ingested_train_dir=ingested_train_dir, 
-                ingested_test_dir=ingested_test_dir
+            data_ingestion_config = DataIngestionConfig(
+                dataset_download_url = dataset_download_url, 
+                tgz_download_dir = tgz_download_dir, 
+                raw_data_dir = raw_data_dir, 
+                ingested_train_dir = ingested_train_dir, 
+                ingested_test_dir = ingested_test_dir
             )
             logging.info(f"Data Ingestion config: {data_ingestion_config}")
             return data_ingestion_config
