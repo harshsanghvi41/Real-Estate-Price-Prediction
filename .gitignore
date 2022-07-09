@@ -2,7 +2,6 @@
 __pycache__/
 *.py[cod]
 *$py.class
-saved_models/*
 
 # C extensions
 *.so
@@ -24,6 +23,7 @@ var/
 wheels/
 pip-wheel-metadata/
 mlproject/
+saved_models/
 share/python-wheels/
 *.egg-info/
 .installed.cfg
