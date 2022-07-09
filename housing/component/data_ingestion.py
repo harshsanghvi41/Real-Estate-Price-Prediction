@@ -28,9 +28,6 @@ class DataIngestion:
             #folder location to download file
             tgz_download_dir = self.data_ingestion_config.tgz_download_dir
             
-            if os.path.exists(tgz_download_dir):
-                os.remove(tgz_download_dir)
-
             os.makedirs(tgz_download_dir,exist_ok=True)
 
             housing_file_name = os.path.basename(download_url)
@@ -77,8 +74,10 @@ class DataIngestion:
             housing_data_frame["income_cat"] = pd.cut(
                 housing_data_frame["median_income"],
                 bins=[0.0, 1.5, 3.0, 4.5, 6.0, np.inf],
-                labels=[1,2,3,4,5])
+                labels=[1,2,3,4,5]
+            )
             
+
             logging.info(f"Splitting data into train and test")
             strat_train_set = None
             strat_test_set = None
@@ -117,15 +116,15 @@ class DataIngestion:
         except Exception as e:
             raise HousingException(e,sys) from e
 
-    def initiate_data_ingestion(self) -> DataIngestionArtifact:
+    def initiate_data_ingestion(self)-> DataIngestionArtifact:
         try:
             tgz_file_path =  self.download_housing_data()
             self.extract_tgz_file(tgz_file_path=tgz_file_path)
             return self.split_data_as_train_test()
-
         except Exception as e:
             raise HousingException(e,sys) from e
     
+
 
     def __del__(self):
         logging.info(f"{'>>'*20}Data Ingestion log completed.{'<<'*20} \n\n")
