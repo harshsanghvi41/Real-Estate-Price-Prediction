@@ -20,8 +20,13 @@ numerical_columns:
   - households
   - median_income
 
+
+
 categorical_columns:
   - ocean_proximity
+
+
+
 
 target_column: median_house_value
 
@@ -32,3 +37,10 @@ domain_value:
     - ISLAND
     - NEAR BAY
     - NEAR OCEAN
+
+
+
+  
+
+
+

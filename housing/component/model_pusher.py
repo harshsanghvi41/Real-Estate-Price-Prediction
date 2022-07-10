@@ -49,5 +49,3 @@ class ModelPusher:
 
     def __del__(self):
         logging.info(f"{'>>' * 20}Model Pusher log completed.{'<<' * 20} ")
-
-        

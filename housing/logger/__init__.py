@@ -3,7 +3,7 @@ from datetime import datetime
 import os
 import pandas as pd
 from housing.constant import get_current_time_stamp 
-LOG_DIR = "logs"
+LOG_DIR="logs"
 
 def get_log_file_name():
     return f"log_{get_current_time_stamp()}.log"
@@ -35,4 +35,5 @@ def get_log_dataframe(file_path):
     log_df["log_message"] = log_df['Time stamp'].astype(str) +":$"+ log_df["message"]
 
     return log_df[["log_message"]]
+
 

@@ -15,7 +15,7 @@ from housing.component.data_ingestion import DataIngestion
 from housing.component.data_validation import DataValidation
 from housing.component.data_transformation import DataTransformation
 from housing.component.model_trainer import ModelTrainer
-from housing.component.model_eveluation import ModelEvaluation
+from housing.component.model_evaluation import ModelEvaluation
 from housing.component.model_pusher import ModelPusher
 import os, sys
 from collections import namedtuple
