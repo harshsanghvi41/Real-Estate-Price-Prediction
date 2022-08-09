@@ -75,6 +75,7 @@ class Pipeline(Thread):
         except Exception as e:
             raise HousingException(e, sys)
 
+
     def start_model_trainer(self, data_transformation_artifact: DataTransformationArtifact) -> ModelTrainerArtifact:
         try:
             model_trainer = ModelTrainer(model_trainer_config=self.config.get_model_trainer_config(),
@@ -83,6 +84,7 @@ class Pipeline(Thread):
             return model_trainer.initiate_model_trainer()
         except Exception as e:
             raise HousingException(e, sys) from e
+
 
     def start_model_evaluation(self, data_ingestion_artifact: DataIngestionArtifact,
                                data_validation_artifact: DataValidationArtifact,

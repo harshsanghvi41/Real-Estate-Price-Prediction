@@ -1,4 +1,3 @@
-
 from housing.entity.config_entity import DataIngestionConfig, DataTransformationConfig,DataValidationConfig,   \
 ModelTrainerConfig,ModelEvaluationConfig,ModelPusherConfig,TrainingPipelineConfig
 from housing.util.util import read_yaml_file
@@ -25,11 +24,13 @@ class Configuartion:
     def get_data_ingestion_config(self) ->DataIngestionConfig:
         try:
             artifact_dir = self.training_pipeline_config.artifact_dir
+
             data_ingestion_artifact_dir=os.path.join(
                 artifact_dir,
                 DATA_INGESTION_ARTIFACT_DIR,
                 self.time_stamp
             )
+            
             data_ingestion_info = self.config_info[DATA_INGESTION_CONFIG_KEY]
             
             dataset_download_url = data_ingestion_info[DATA_INGESTION_DOWNLOAD_URL_KEY]
@@ -161,13 +162,15 @@ class Configuartion:
                 self.time_stamp
             )
             model_trainer_config_info = self.config_info[MODEL_TRAINER_CONFIG_KEY]
-            trained_model_file_path = os.path.join(model_trainer_artifact_dir,
-            model_trainer_config_info[MODEL_TRAINER_TRAINED_MODEL_DIR_KEY],
-            model_trainer_config_info[MODEL_TRAINER_TRAINED_MODEL_FILE_NAME_KEY]
-            )
 
-            model_config_file_path = os.path.join(model_trainer_config_info[MODEL_TRAINER_MODEL_CONFIG_DIR_KEY],
-            model_trainer_config_info[MODEL_TRAINER_MODEL_CONFIG_FILE_NAME_KEY]
+            trained_model_file_path = os.path.join(model_trainer_artifact_dir,
+                    model_trainer_config_info[MODEL_TRAINER_TRAINED_MODEL_DIR_KEY],
+                    model_trainer_config_info[MODEL_TRAINER_TRAINED_MODEL_FILE_NAME_KEY]
+                    )
+
+            model_config_file_path = os.path.join(
+                    model_trainer_config_info[MODEL_TRAINER_MODEL_CONFIG_DIR_KEY],
+                    model_trainer_config_info[MODEL_TRAINER_MODEL_CONFIG_FILE_NAME_KEY]
             )
 
             base_accuracy = model_trainer_config_info[MODEL_TRAINER_BASE_ACCURACY_KEY]
@@ -182,7 +185,7 @@ class Configuartion:
         except Exception as e:
             raise HousingException(e,sys) from e
 
-    def get_model_evaluation_config(self) ->ModelEvaluationConfig:
+    def get_model_evaluation_config(self) ->ModelEvaluationConfig:  
         try:
             model_evaluation_config = self.config_info[MODEL_EVALUATION_CONFIG_KEY]
             artifact_dir = os.path.join(self.training_pipeline_config.artifact_dir,

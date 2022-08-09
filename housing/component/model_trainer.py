@@ -1,4 +1,3 @@
-
 from housing.exception import HousingException
 import sys
 from housing.logger import logging

@@ -1,11 +1,11 @@
-
-
+from housing.constant import CONFIG_FILE_PATH
 from housing.logger import logging
 from housing.exception import HousingException
 from housing.entity.config_entity import DataValidationConfig
 from housing.entity.artifact_entity import DataIngestionArtifact,DataValidationArtifact
 import os,sys
 import pandas  as pd
+from housing.util.util import read_yaml_file
 from evidently.model_profile import Profile
 from evidently.model_profile.sections import DataDriftProfileSection
 from evidently.dashboard import Dashboard
@@ -53,8 +53,7 @@ class DataValidation:
             if not is_available:
                 training_file = self.data_ingestion_artifact.train_file_path
                 testing_file = self.data_ingestion_artifact.test_file_path
-                message=f"Training file: {training_file} or Testing file: {testing_file}" \
-                    "is not present"
+                message=f"Training file: {training_file} or Testing file: {testing_file} is not present"
                 raise Exception(message)
 
             return is_available
@@ -62,23 +61,42 @@ class DataValidation:
             raise HousingException(e,sys) from e
 
     
-    def validate_dataset_schema(self)->bool:
+    def validate_dataset_schema(self) -> bool:
         try:
             validation_status = False
             
-            #Assigment validate training and testing dataset using schema file
-            #1. Number of Column
-            #2. Check the value of ocean proximity 
-            # acceptable values     <1H OCEAN
-            # INLAND
-            # ISLAND
-            # NEAR BAY
-            # NEAR OCEAN
-            #3. Check column names
+            train_df = pd.read_csv(self.data_ingestion_artifact.train_file_path)
+            test_df = pd.read_csv(self.data_ingestion_artifact.test_file_path)
 
+            # reading column names from schema.yaml file
+            scheme_file_path = self.data_validation_config.schema_file_path
+            dict = read_yaml_file(file_path = scheme_file_path)['columns']
+            
+            schema_file_columns = []
+            for key in dict.keys():
+                schema_file_columns.append(key)
+            
+            logging.info(f"Reading column names from schema.yaml file: {schema_file_columns}")
 
-            validation_status = True
-            return validation_status 
+            # comparing column names of train, test and schema.yaml file
+            if sorted(train_df.columns.to_list()) == sorted(test_df.columns.to_list()) == sorted(schema_file_columns):
+
+                logging.info(f"Training, Testing and schema.yaml file having same column name.")
+                
+                # checking values of "ocean_proximity" in schema.yaml file
+                # acceptable values : <1H OCEAN, INLAND, ISLAND, NEAR BAY, NEAR OCEAN
+                ocean_yaml_col_value = sorted(read_yaml_file(file_path = scheme_file_path)['domain_value']['ocean_proximity'])
+
+                #checking values of "ocean_proximity" in train and test file
+                ocen_proximity_val_train_df = sorted(train_df["ocean_proximity"].unique())
+                ocen_proximity_val_test_df = sorted(test_df["ocean_proximity"].unique())
+
+                # checking whethere "ocean_proximity" column having same values or not
+                if ocen_proximity_val_train_df == ocen_proximity_val_test_df == ocean_yaml_col_value:
+                    validation_status = True
+                    logging.info(f'ocean_proximity column hvaing same values in Training, Testing and schema.yaml file.')
+                return validation_status
+
         except Exception as e:
             raise HousingException(e,sys) from e
 
@@ -146,6 +164,3 @@ class DataValidation:
     def __del__(self):
         logging.info(f"{'>>'*30}Data Valdaition log completed.{'<<'*30} \n\n")
         
-
-
-
