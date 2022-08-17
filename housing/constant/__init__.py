@@ -30,14 +30,11 @@ TRAINING_PIPELINE_NAME_KEY = "pipeline_name"
 
 DATA_INGESTION_CONFIG_KEY = "data_ingestion_config"
 DATA_INGESTION_ARTIFACT_DIR = "data_ingestion"
-DATA_INGESTION_DOWNLOAD_URL_KEY = "dataset_download_url"
 DATA_INGESTION_RAW_DATA_DIR_KEY = "raw_data_dir"
-DATA_INGESTION_TGZ_DOWNLOAD_DIR_KEY = "tgz_download_dir"
 DATA_INGESTION_INGESTED_DIR_NAME_KEY = "ingested_dir"
 DATA_INGESTION_TRAIN_DIR_KEY = "ingested_train_dir"
 DATA_INGESTION_TEST_DIR_KEY = "ingested_test_dir"
 
-# Data Validation related variable
 
 # Data Validation related variables
 DATA_VALIDATION_CONFIG_KEY = "data_validation_config"
@@ -88,6 +85,8 @@ MODEL_TRAINER_MODEL_CONFIG_FILE_NAME_KEY = "model_config_file_name"
 MODEL_EVALUATION_CONFIG_KEY = "model_evaluation_config"
 MODEL_EVALUATION_FILE_NAME_KEY = "model_evaluation_file_name"
 MODEL_EVALUATION_ARTIFACT_DIR = "model_evaluation"
+
+
 # Model Pusher config key
 MODEL_PUSHER_CONFIG_KEY = "model_pusher_config"
 MODEL_PUSHER_MODEL_EXPORT_DIR_KEY = "model_export_dir"
