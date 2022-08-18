@@ -7,5 +7,5 @@ PyYAML
 evidently
 dill
 matplotlib
-mysql.connector
+pymongo[srv]
 -e .

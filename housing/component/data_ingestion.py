@@ -5,7 +5,7 @@ from housing.logger import logging
 from housing.entity.artifact_entity import DataIngestionArtifact
 import numpy as np
 import pandas as pd
-import mysql.connector as conn
+import pymongo
 from sklearn.model_selection import StratifiedShuffleSplit
 
 class DataIngestion:
@@ -18,7 +18,7 @@ class DataIngestion:
         except Exception as e:
             raise HousingException(e,sys)
     
-
+    """"
     def get_data_from_sql(self):
         try:
             self.db = conn.connect(host = 'localhost', user = 'root', passwd = 'root', database = 'housing')
@@ -90,8 +90,42 @@ class DataIngestion:
 
         except Exception as e:
             raise HousingException(e)
-
+        """
     
+    def get_data_from_mongodb(self):
+        try:
+            self.client = pymongo.MongoClient("mongodb+srv://mongodb:mongodb@cluster0.akfky.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+            db = self.client['harsh']
+            logging.info("Database Authenticated!")
+
+            col = db['HousingData']
+            logging.info("Collection Created/Found!")
+
+            cursor = col.find()
+            mongo_docs = list(cursor)
+
+            df_csv = pd.DataFrame(mongo_docs, columns=["longitude", "latitude", "housing_median_age", "total_rooms", "total_bedrooms", "population", "households", "median_income", "median_house_value", "ocean_proximity"])
+            logging.info("Storing data into dataframe : df_csv")
+
+            raw_data_dir = self.data_ingestion_config.raw_data_dir
+
+            if os.path.exists(raw_data_dir):
+                os.remove(raw_data_dir)
+
+            os.makedirs(raw_data_dir,exist_ok=True)
+            logging.info("raw_data folder has created")
+
+            housing_file_name = 'Housing_Data.csv'
+            raw_file_path = os.path.join(raw_data_dir, housing_file_name)
+            
+            df_csv.to_csv(raw_file_path, index=False)
+            logging.info("Stored data into csv file")
+            return df_csv
+
+        except Exception as e:
+            raise HousingException(e)
+    
+
     def split_data_as_train_test(self) -> DataIngestionArtifact:
         try:
             raw_data_dir = self.data_ingestion_config.raw_data_dir
@@ -152,7 +186,7 @@ class DataIngestion:
 
     def initiate_data_ingestion(self)-> DataIngestionArtifact:
         try:
-            self.get_data_from_sql()
+            self.get_data_from_mongodb()
             return self.split_data_as_train_test()
 
         except Exception as e:
